@@ -1,0 +1,66 @@
+Additional Functionalities
+
+Error-Resistant Design
+In case the user accidentally inputs an invalid input or due to a transmission error
+an invalid input is received, the circuit will ensure that the system will stay in its
+previous valid state till the error is rectified. We have implemented a One-Hot
+Encoding/Decoding circuit to validate the input. The details have been described
+in the ‘Design/Algorithm’
+section.
+Invalid LED
+1. If there is an error in the system, invalid LED blinks at different frequencies
+depending on the error location.
+2. If the error is in the first 3 bits from the right (C2,C1,C0), the LED won’t blink
+and will stay high till rectified.
+18
+3. If the error is in the next 3 bits (B1,B0,C3), the light will be ON for 1 cycle and
+will be OFF for 2 cycles.
+4. If the error is in the next 3 bits (A0,B3,B2), it’s ON for 1 cycle and OFF for 3
+cycles.
+5. If the error is in the last 3 bits (A3,A2,A1), ON for 1 cycle and OFF for 4 cycles.
+6. Remains always OFF for valid inputs.
+7. This acts as a preliminary error identifier and helps the engineer by enabling easy
+and quick debugging in certain cases.
+
+
+Debug Mode
+In the case of a suspected error in multiple bit locations, the Debug mode will help
+the engineer figure out the wrong bits received. When the Debug button is pressed
+and held, the shift register will stop shifting and the data bits received can be read
+using a display or probes. With known input and output, the problem can be
+identified with less effort.
+Party Mode
+1. The party mode is enabled when the input is 924: 1001 0010 0100 (100 100 100
+100).
+2. The lights will flicker between four modes: 00,01,10,11 for Light 1 and Light 2
+respectively, every clock pulse (4 Hz).
+3. The circuit will remain in party mode till the input is changed, great for all-night
+parties!
+4. If lights are already ON, it will stay ON for 4 clock cycles and will start flickering
+after that.
+5. State of the fans remains the same when the party mode is enabled. It can be
+changed by first disabling the party mode and then providing the appropriate
+input.
+
+
+Kill Switch
+1. Turns off all the devices in the circuit when it is pressed for at least 1/4th of a
+second.
+2. Resets all the memory devices except the power usage counters.
+3. We assume that the kill switch, when enabled, communicates with the wifi
+transmitter which will send the signal to the source (cloud) to reset the states to
+zero. This is done to ensure that the state of the system is up to date everywhere.
+19
+4. An important application: It can be used when the user is leaving home and wants
+to turn off all the appliances at once.
+
+
+Power Usage Counter
+1. We are assuming that each fan consumes 1 Watt for every 16 clock cycles.
+2. Each fan is attached to a counter, which counts the number of cycles the fan was
+turned ON and will update it in a cloud-based database after every 16 cycles of
+ON state.
+3. Smart assistants can then warn the user if the power consumption reaches a higher
+than expected value.
+4. It can be used to compare the power consumption tally provided by the bill from
+the electricity board.
